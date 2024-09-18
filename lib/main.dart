@@ -1,3 +1,4 @@
+import 'package:exemplo_flutter/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'models/login_response.dart';
@@ -82,10 +83,14 @@ class _MyHomePageState extends State<MyHomePage> {
       _counter++;
     });
     TokenService manager = await TokenService.getInstance();
-      login1 = LoginResponse(tokenType: 'teste',accessToken: 'token',expiresIn: 60, refreshToken: 'refresh');
-      login1?.expiresDate = DateTime.now().add(Duration(minutes: login1?.expiresIn ?? 0));
-      await manager.store(login1!);
-      print(LoginResponse.serialize(login1!));
+    //   login1 = LoginResponse(tokenType: 'teste',accessToken: 'token',expiresIn: 60, refreshToken: 'refresh');
+    //   login1?.expiresDate = DateTime.now().add(Duration(minutes: login1?.expiresIn ?? 0));
+    //   await manager.store(login1!);
+    //   print(LoginResponse.serialize(login1!));
+    AuthService authService = AuthService();
+    LoginResponse response = await authService.login('atxaloisio@gmail.com','Pass4ptec@');
+    // response.expiresDate = DateTime.now().add(Duration(minutes: response.expiresIn ?? 0));
+    await manager.store(response);
   }
 
   Future<void> _lerToken() async {
@@ -100,6 +105,10 @@ class _MyHomePageState extends State<MyHomePage> {
     TokenService manager = await TokenService.getInstance();
     login2 = manager.retrieve();
     print(LoginResponse.serialize(login2!));
+    if (login2!.isValidToken()){
+      print('valido');
+    }
+
   }
 
   @override

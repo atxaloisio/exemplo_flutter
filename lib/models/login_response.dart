@@ -15,6 +15,9 @@ class LoginResponse {
     expiresIn = json['expiresIn'];
     refreshToken = json['refreshToken'];
     expiresDate = json['expiresDate'] == null ? null : DateTime.parse(json['expiresDate'] as String);
+    if ((json['expiresDate'] == null) && (json['expiresIn'] != null)) {
+      _calcExpiresDate();
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -25,6 +28,16 @@ class LoginResponse {
     data['refreshToken'] = refreshToken;
     data['expiresDate'] = expiresDate?.toIso8601String();
     return data;
+  }
+
+  void _calcExpiresDate() {
+    int seconds = this.expiresIn??0;
+    int minutes = (seconds / 60) as int;
+    this.expiresDate = DateTime.now().add(Duration(minutes: minutes));
+  }
+
+  bool isValidToken() {
+    return DateTime.now().isBefore(expiresDate!);
   }
 
   static String serialize(LoginResponse model) => json.encode(model.toJson());
