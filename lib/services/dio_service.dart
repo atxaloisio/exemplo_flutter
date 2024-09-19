@@ -5,7 +5,11 @@ import 'package:exemplo_flutter/services/token_service.dart';
 
 class DioService {
   static Dio buildDioClient(String base) {
-    final dio = Dio()..options = BaseOptions(baseUrl: base);
+    final dio = Dio()..options = BaseOptions(
+        baseUrl: base,
+        connectTimeout: const Duration(milliseconds: 5000),
+        receiveTimeout: const Duration(milliseconds: 3000),
+      );
     dio.interceptors.addAll(
       [
         TokenInterceptor(),

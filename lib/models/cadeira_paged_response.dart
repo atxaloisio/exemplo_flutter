@@ -17,7 +17,7 @@ class CadeiraPagedResponse {
   @JsonKey(name: "data")
   List<Cadeira> data;
   @JsonKey(name: "message")
-  String message;
+  String? message;
   @JsonKey(name: "currentPage")
   int currentPage;
   @JsonKey(name: "totalPages")

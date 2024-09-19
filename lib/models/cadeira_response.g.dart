@@ -11,7 +11,7 @@ CadeiraResponse _$CadeiraResponseFromJson(Map<String, dynamic> json) =>
       data: (json['data'] as List<dynamic>)
           .map((e) => Cadeira.fromJson(e as Map<String, dynamic>))
           .toList(),
-      message: json['message'] as String,
+      message: json['message'] as String?,
     );
 
 Map<String, dynamic> _$CadeiraResponseToJson(CadeiraResponse instance) =>

@@ -12,7 +12,7 @@ CadeiraPagedResponse _$CadeiraPagedResponseFromJson(
       data: (json['data'] as List<dynamic>)
           .map((e) => Cadeira.fromJson(e as Map<String, dynamic>))
           .toList(),
-      message: json['message'] as String,
+      message: json['message'] as String?,
       currentPage: (json['currentPage'] as num).toInt(),
       totalPages: (json['totalPages'] as num).toInt(),
       pageSize: (json['pageSize'] as num).toInt(),

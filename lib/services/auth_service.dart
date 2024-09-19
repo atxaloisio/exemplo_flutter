@@ -12,10 +12,17 @@ class AuthService {
         receiveTimeout: const Duration(milliseconds: 3000) ,
       ), ));
   Future<LoginResponse> login(String email, String password) async {
-    LoginRequest loginRequest = LoginRequest(email: email, password: password);
-    LoginResponse response = await _repository.login(loginRequest, false, false);
-    // print(LoginResponse.serialize(response));
-    return response;
+    try {
+      LoginRequest loginRequest =
+          LoginRequest(email: email, password: password);
+      LoginResponse response =
+          await _repository.login(loginRequest, false, false);
+      // print(LoginResponse.serialize(response));
+      return response;
+    } catch (e) {
+      throw();
+    }
+
   }
   Future<LoginResponse> refresh(String token) async {
     RefreshToken refreshToken = RefreshToken(refreshToken: token);

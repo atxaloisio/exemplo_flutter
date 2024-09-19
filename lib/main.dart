@@ -1,4 +1,8 @@
+import 'package:exemplo_flutter/models/cadeira_paged_response.dart';
 import 'package:exemplo_flutter/services/auth_service.dart';
+import 'package:exemplo_flutter/services/dio_service.dart';
+import 'package:exemplo_flutter/services/repositorys/api_end_points.dart';
+import 'package:exemplo_flutter/services/repositorys/cadeira_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'models/login_response.dart';
@@ -102,12 +106,40 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
     });
-    TokenService manager = await TokenService.getInstance();
-    login2 = manager.retrieve();
-    print(LoginResponse.serialize(login2!));
-    if (login2!.isValidToken()){
-      print('valido');
+    // TokenService manager = await TokenService.getInstance();
+    // login2 = manager.retrieve();
+    // print(LoginResponse.serialize(login2!));
+
+    // if (login2!.isValidToken()){
+    //   print('valido');
+    // }
+    String baseUrl = ApiEndPoints.getBaseUrl();
+    CadeiraRepository repository = CadeiraRepository(DioService.buildDioClient(baseUrl),baseUrl: baseUrl);
+
+    CadeiraPagedResponse response = await repository.getAllCadeiras(1, 25);
+    for (final cadeira in response.data) {
+      print('${cadeira.id} - ${cadeira.nome}');
     }
+
+
+    // response.data.forEach(print);
+    // print(response.totalCount);
+  }
+
+  Future<void> _listaCadeira() async {
+    setState(() {
+      // This call to setState tells the Flutter framework that something has
+      // changed in this State, which causes it to rerun the build method below
+      // so that the display can reflect the updated values. If we changed
+      // _counter without calling setState(), then the build method would not be
+      // called again, and so nothing would appear to happen.
+      _counter++;
+    });
+    final _repository = CadeiraRepository(DioService.buildDioClient(
+        dotenv.env['BASE_URL'] ?? 'http://localhost:5164/'),baseUrl: dotenv.env['BASE_URL'] ?? 'http://localhost:5164/');
+
+    CadeiraPagedResponse response = await _repository.getAllCadeiras(1, 25);
+    print(response.totalCount);
 
   }
 
@@ -158,6 +190,10 @@ class _MyHomePageState extends State<MyHomePage> {
             ElevatedButton(
               onPressed: _lerToken,
               child: const Text('LerToken'),
+            ),
+            ElevatedButton(
+              onPressed: _listaCadeira,
+              child: const Text('listar'),
             ),
           ],
         ),

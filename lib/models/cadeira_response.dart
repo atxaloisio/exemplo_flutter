@@ -13,7 +13,7 @@ class CadeiraResponse {
   @JsonKey(name: "data")
   List<Cadeira> data;
   @JsonKey(name: "message")
-  String message;
+  String? message;
 
   CadeiraResponse({
     required this.data,
